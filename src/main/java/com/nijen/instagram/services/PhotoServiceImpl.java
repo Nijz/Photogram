@@ -51,7 +51,7 @@ public class PhotoServiceImpl implements PhotoService{
     @Override
     public Boolean uploadPhoto(User user, MultipartFile file, String caption) throws IOException {
 
-        Photo photo = new Photo();
+//        Photo photo = new Photo();
         PhotoUploadedEvent event = new PhotoUploadedEvent();
 
         if (user == null || file == null){
@@ -59,29 +59,26 @@ public class PhotoServiceImpl implements PhotoService{
         }
 
         String url = minioService.uploadFile(file);
-//        UUID photoId = UUID.randomUUID();
-//        UserPhoto userPhoto = UserPhoto.builder()
-//                .key(UserPhotoKey.builder()
-//                        .userId(user.getId())
-//                        .photoId(photoId)
-//                        .createdAt(Instant.now())
-//                        .build())
-//                .photoUrl(url)
-//                .caption(caption)
-//                .build();
-//
-//        userPhotoRepository.save(userPhoto);
+        UUID photoId = UUID.randomUUID();
+        UserPhoto userPhoto = UserPhoto.builder()
+                .key(UserPhotoKey.builder()
+                        .userId(user.getId())
+                        .photoId(photoId)
+                        .createdAt(Instant.now())
+                        .build())
+                .photoUrl(url)
+                .caption(caption)
+                .build();
 
-        photo.setUserId(user);
-        photo.setPhotoUrl(url);
-        photo.setCaption(caption);
-        photo.setCreatedAt(LocalDateTime.now());
-        photoRepository.save(photo);
+        userPhotoRepository.save(userPhoto);
 
-        List<Follow> followers = followRepository.findByFollowedId(user);
+//        photo.setUserId(user);
+//        photo.setPhotoUrl(url);
+//        photo.setCaption(caption);
+//        photo.setCreatedAt(LocalDateTime.now());
+//        photoRepository.save(photo);
 
-
-        event.setPhotoId(photo.getId());
+        event.setPhotoId(photoId);
         event.setUserId(user.getId());
         event.setPhotoUrl(url);
         event.setCaption(caption);
