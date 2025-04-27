@@ -46,6 +46,7 @@ replay_pid*
 # Ignore Spring Boot application properties
 /src/main/resources/application.properties
 /src/main/resources/application.yml
+/target/classes/application.properties
 
 # OS Files
 .DS_Store
